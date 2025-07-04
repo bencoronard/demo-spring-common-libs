@@ -1,0 +1,65 @@
+plugins {
+  id 'java-library'
+  id 'maven-publish'
+}
+
+group = 'dev.hireben.demo'
+version = 'latest'
+description = 'Demo Spring Boot common library project'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(25)
+  }
+}
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+ 
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+ext {
+  set('commonBom', 'dev.hireben.demo:common-dependencies:latest')
+}
+
+dependencies {
+  implementation platform("${commonBom}")
+  annotationProcessor platform("${commonBom}")
+
+  implementation 'org.apache.httpcomponents.client5:httpclient5'
+
+  compileOnly 'org.springframework:spring-webmvc'
+  compileOnly 'jakarta.servlet:jakarta.servlet-api'
+  compileOnly 'jakarta.validation:jakarta.validation-api'
+  compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+  compileOnly 'org.slf4j:slf4j-api'
+  compileOnly 'io.micrometer:micrometer-tracing-bridge-brave'
+
+  api 'io.jsonwebtoken:jjwt-api'
+  runtimeOnly 'io.jsonwebtoken:jjwt-impl'
+  runtimeOnly 'io.jsonwebtoken:jjwt-jackson'
+
+  annotationProcessor 'org.projectlombok:lombok'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+
+publishing {
+  publications {
+		maven(MavenPublication) {
+			from components.java
+		}
+	}
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
