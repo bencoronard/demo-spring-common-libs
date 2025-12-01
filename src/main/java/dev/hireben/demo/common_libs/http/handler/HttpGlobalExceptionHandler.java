@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -45,11 +43,11 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
   // =============================================================================
 
   @Override
-  protected final @NonNull ResponseEntity<Object> createResponseEntity(
-      @Nullable Object body,
-      @NonNull HttpHeaders headers,
-      @NonNull HttpStatusCode statusCode,
-      @NonNull WebRequest request) {
+  protected final ResponseEntity<Object> createResponseEntity(
+      Object body,
+      HttpHeaders headers,
+      HttpStatusCode statusCode,
+      WebRequest request) {
 
     if (body instanceof ProblemDetail problemDetail) {
       problemDetail.setProperty("timestamp", Instant.now());
@@ -63,10 +61,10 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
 
   @Override
   protected final ResponseEntity<Object> handleMethodArgumentNotValid(
-      @NonNull MethodArgumentNotValidException ex,
-      @NonNull HttpHeaders headers,
-      @NonNull HttpStatusCode status,
-      @NonNull WebRequest request) {
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
 
     ProblemDetail problemDetail = ex.updateAndGetBody(getMessageSource(), LocaleContextHolder.getLocale());
 

@@ -2,7 +2,6 @@ package dev.hireben.demo.common_libs.http.filter;
 
 import java.io.IOException;
 
-import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
@@ -14,9 +13,9 @@ public final class HttpApiAccessLogFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      @NonNull HttpServletRequest request,
-      @NonNull HttpServletResponse response,
-      @NonNull FilterChain filterChain) throws ServletException, IOException {
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain filterChain) throws ServletException, IOException {
 
     if (!isAsyncDispatch(request)) {
       logger.info(String.format(

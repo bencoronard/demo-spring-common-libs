@@ -32,13 +32,10 @@ dependencies {
   implementation platform("${commonBom}")
   annotationProcessor platform("${commonBom}")
 
-  implementation 'org.apache.httpcomponents.client5:httpclient5'
-
   compileOnly 'org.springframework:spring-webmvc'
   compileOnly 'jakarta.servlet:jakarta.servlet-api'
   compileOnly 'jakarta.validation:jakarta.validation-api'
   compileOnly 'com.fasterxml.jackson.core:jackson-databind'
-  compileOnly 'org.slf4j:slf4j-api'
   compileOnly 'io.micrometer:micrometer-tracing-bridge-brave'
 
   api 'io.jsonwebtoken:jjwt-api'
