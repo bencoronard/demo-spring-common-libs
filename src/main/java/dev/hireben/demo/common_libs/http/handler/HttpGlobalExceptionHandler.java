@@ -17,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import dev.hireben.demo.common_libs.exception.ApplicationException;
@@ -24,6 +25,7 @@ import dev.hireben.demo.common_libs.exception.InsufficientPermissionException;
 import dev.hireben.demo.common_libs.exception.TokenMalformedException;
 import dev.hireben.demo.common_libs.http.dto.HttpFieldValidationErrorMap;
 import io.jsonwebtoken.JwtException;
+import io.micrometer.tracing.TraceContext;
 import io.micrometer.tracing.Tracer;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
@@ -51,7 +53,8 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
 
     if (body instanceof ProblemDetail problemDetail) {
       problemDetail.setProperty("timestamp", Instant.now());
-      problemDetail.setProperty("trace", tracer.currentTraceContext().context().traceId());
+      TraceContext context = tracer.currentTraceContext().context();
+      problemDetail.setProperty("trace", context != null ? context.traceId() : "");
     }
 
     return super.createResponseEntity(body, headers, statusCode, request);
@@ -99,6 +102,22 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
         .toList();
 
     problemDetail.setProperty("errors", errors);
+
+    return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  private ResponseEntity<Object> handleMethodArgumentTypeMismatch(
+      MethodArgumentTypeMismatchException ex,
+      WebRequest request) {
+
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+
+    String message = String.format("Invalid parameter value: %s", ex.getName());
+
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, message);
 
     return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
   }
