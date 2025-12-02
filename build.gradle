@@ -36,7 +36,7 @@ dependencies {
   compileOnly 'jakarta.servlet:jakarta.servlet-api'
   compileOnly 'jakarta.validation:jakarta.validation-api'
   compileOnly 'com.fasterxml.jackson.core:jackson-databind'
-  compileOnly 'io.micrometer:micrometer-tracing-bridge-brave'
+  compileOnly 'io.micrometer:micrometer-tracing-bridge-otel'
 
   api 'io.jsonwebtoken:jjwt-api'
   runtimeOnly 'io.jsonwebtoken:jjwt-impl'
