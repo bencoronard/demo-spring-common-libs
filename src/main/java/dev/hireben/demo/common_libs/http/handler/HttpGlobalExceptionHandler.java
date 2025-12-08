@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,7 @@ import dev.hireben.demo.common_libs.exception.InsufficientPermissionException;
 import dev.hireben.demo.common_libs.http.dto.HttpFieldValidationErrorMap;
 import dev.hireben.demo.common_libs.jwt.exception.TokenIssuanceFailException;
 import dev.hireben.demo.common_libs.jwt.exception.TokenMalformedException;
-import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.ClaimJwtException;
 import io.micrometer.tracing.TraceContext;
 import io.micrometer.tracing.Tracer;
 import jakarta.validation.ConstraintViolationException;
@@ -156,14 +155,14 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
 
   // -----------------------------------------------------------------------------
 
-  @ExceptionHandler(JwtException.class)
-  private ResponseEntity<Object> handleJwtValidationFailure(
-      JwtException ex,
+  @ExceptionHandler(ClaimJwtException.class)
+  private ResponseEntity<Object> handleJwtVerificationFailure(
+      ClaimJwtException ex,
       WebRequest request) {
 
     HttpStatus status = HttpStatus.UNAUTHORIZED;
 
-    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, "Authorization failed");
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, ex.getMessage());
 
     return createResponseEntity(problemDetail, HttpHeaders.EMPTY, status, request);
   }
