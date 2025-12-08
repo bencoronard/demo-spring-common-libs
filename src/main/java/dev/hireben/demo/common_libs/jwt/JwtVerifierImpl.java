@@ -1,11 +1,11 @@
-package dev.hireben.demo.common_libs.jwt.utility;
+package dev.hireben.demo.common_libs.jwt;
 
 import java.security.PublicKey;
 import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
-import dev.hireben.demo.common_libs.jwt.JwtVerifier;
+import dev.hireben.demo.common_libs.jwt.api.JwtVerifier;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;

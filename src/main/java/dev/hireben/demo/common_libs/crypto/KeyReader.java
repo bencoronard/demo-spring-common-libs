@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.crypto.utility;
+package dev.hireben.demo.common_libs.crypto;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;

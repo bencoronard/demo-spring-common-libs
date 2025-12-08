@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.jwt.utility;
+package dev.hireben.demo.common_libs.jwt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,8 +15,9 @@ import javax.crypto.SecretKey;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import dev.hireben.demo.common_libs.jwt.JwtIssuer;
-import dev.hireben.demo.common_libs.jwt.JwtVerifier;
+
+import dev.hireben.demo.common_libs.jwt.api.JwtIssuer;
+import dev.hireben.demo.common_libs.jwt.api.JwtVerifier;
 import dev.hireben.demo.common_libs.jwt.exception.TokenIssuanceFailException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

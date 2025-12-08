@@ -1,12 +1,12 @@
-package dev.hireben.demo.common_libs.jwt.utility;
+package dev.hireben.demo.common_libs.jwt;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
-import dev.hireben.demo.common_libs.jwt.JwtIssuer;
-import dev.hireben.demo.common_libs.jwt.JwtVerifier;
+import dev.hireben.demo.common_libs.jwt.api.JwtIssuer;
+import dev.hireben.demo.common_libs.jwt.api.JwtVerifier;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

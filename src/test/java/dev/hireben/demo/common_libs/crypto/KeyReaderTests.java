@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.crypto.utility;
+package dev.hireben.demo.common_libs.crypto;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

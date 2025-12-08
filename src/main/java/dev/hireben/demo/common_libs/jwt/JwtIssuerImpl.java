@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.jwt.utility;
+package dev.hireben.demo.common_libs.jwt;
 
 import java.security.PrivateKey;
 import java.time.Instant;
@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 import javax.crypto.SecretKey;
 
-import dev.hireben.demo.common_libs.jwt.JwtIssuer;
+import dev.hireben.demo.common_libs.jwt.api.JwtIssuer;
 import dev.hireben.demo.common_libs.jwt.exception.TokenIssuanceFailException;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

@@ -9,7 +9,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import dev.hireben.demo.common_libs.constant.MessageHeader;
 import dev.hireben.demo.common_libs.http.annotation.HttpAuthorizationHeader;
-import dev.hireben.demo.common_libs.jwt.JwtVerifier;
+import dev.hireben.demo.common_libs.jwt.api.JwtVerifier;
 import dev.hireben.demo.common_libs.jwt.exception.TokenMalformedException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
