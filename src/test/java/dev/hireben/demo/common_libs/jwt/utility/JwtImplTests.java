@@ -8,6 +8,9 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
+
 import javax.crypto.SecretKey;
 
 import org.assertj.core.api.Assertions;
@@ -16,7 +19,9 @@ import dev.hireben.demo.common_libs.jwt.JwtIssuer;
 import dev.hireben.demo.common_libs.jwt.JwtVerifier;
 import dev.hireben.demo.common_libs.jwt.exception.TokenIssuanceFailException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.PrematureJwtException;
 
 final class JwtImplTests {
 
@@ -131,6 +136,88 @@ final class JwtImplTests {
     assertNotNull(claims);
     assertNotNull(claims.getId());
     assertNotNull(claims.getIssuedAt());
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void verifyToken_withoutKey_whenTokenExpired_shouldThrowException() {
+    String expiredToken = Jwts.builder()
+        .expiration(Date.from(Instant.now().minusSeconds(1)))
+        .compact();
+
+    JwtVerifier verifier = new JwtVerifierImpl();
+
+    assertThrows(ExpiredJwtException.class, () -> verifier.verifyToken(expiredToken));
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void verifyToken_withSymmKey_whenTokenExpired_shouldThrowException() {
+    String expiredToken = Jwts.builder()
+        .signWith(symmetricKey)
+        .expiration(Date.from(Instant.now().minusSeconds(1)))
+        .compact();
+
+    JwtVerifier verifier = new JwtVerifierImpl(symmetricKey);
+
+    assertThrows(ExpiredJwtException.class, () -> verifier.verifyToken(expiredToken));
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void verifyToken_withAsymmKey_whenTokenExpired_shouldThrowException() {
+    String expiredToken = Jwts.builder()
+        .signWith(keyPair.getPrivate())
+        .expiration(Date.from(Instant.now().minusSeconds(1)))
+        .compact();
+
+    JwtVerifier verifier = new JwtVerifierImpl(keyPair.getPublic());
+
+    assertThrows(ExpiredJwtException.class, () -> verifier.verifyToken(expiredToken));
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void verifyToken_withoutKey_whenTokenNotYetUsable_shouldThrowException() {
+    String expiredToken = Jwts.builder()
+        .notBefore(Date.from(Instant.now().plusSeconds(3600)))
+        .compact();
+
+    JwtVerifier verifier = new JwtVerifierImpl();
+
+    assertThrows(PrematureJwtException.class, () -> verifier.verifyToken(expiredToken));
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void verifyToken_withSymmKey_whenTokenNotYetUsable_shouldThrowException() {
+    String expiredToken = Jwts.builder()
+        .signWith(symmetricKey)
+        .notBefore(Date.from(Instant.now().plusSeconds(3600)))
+        .compact();
+
+    JwtVerifier verifier = new JwtVerifierImpl(symmetricKey);
+
+    assertThrows(PrematureJwtException.class, () -> verifier.verifyToken(expiredToken));
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void verifyToken_withAsymmKey_whenTokenNotYetUsable_shouldThrowException() {
+    String expiredToken = Jwts.builder()
+        .signWith(keyPair.getPrivate())
+        .notBefore(Date.from(Instant.now().plusSeconds(3600)))
+        .compact();
+
+    JwtVerifier verifier = new JwtVerifierImpl(keyPair.getPublic());
+
+    assertThrows(PrematureJwtException.class, () -> verifier.verifyToken(expiredToken));
   }
 
 }
