@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import javax.crypto.SecretKey;
 
 import dev.hireben.demo.common_libs.jwt.JwtIssuer;
+import dev.hireben.demo.common_libs.jwt.exception.TokenIssuanceFailException;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 
@@ -63,7 +64,7 @@ final class JwtIssuerImpl implements JwtIssuer {
     if (ttl != null) {
       Instant expAt = tokenEffective.plus(ttl);
       if (expAt.isBefore(now)) {
-        throw new IllegalArgumentException("Token expiration cannot be in the past");
+        throw new TokenIssuanceFailException("Token expiration cannot be in the past");
       }
       jwt.expiration(Date.from(expAt));
     }

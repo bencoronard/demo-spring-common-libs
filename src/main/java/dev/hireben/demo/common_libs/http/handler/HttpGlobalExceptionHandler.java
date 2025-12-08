@@ -22,8 +22,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import dev.hireben.demo.common_libs.exception.ApplicationException;
 import dev.hireben.demo.common_libs.exception.InsufficientPermissionException;
-import dev.hireben.demo.common_libs.exception.TokenMalformedException;
 import dev.hireben.demo.common_libs.http.dto.HttpFieldValidationErrorMap;
+import dev.hireben.demo.common_libs.jwt.exception.TokenIssuanceFailException;
+import dev.hireben.demo.common_libs.jwt.exception.TokenMalformedException;
 import io.jsonwebtoken.JwtException;
 import io.micrometer.tracing.TraceContext;
 import io.micrometer.tracing.Tracer;
@@ -40,7 +41,8 @@ public abstract class HttpGlobalExceptionHandler extends ResponseEntityException
 
   protected static final Map<Class<? extends Throwable>, HttpStatus> exceptionStatusMap = new HashMap<>(
       Map.of(InsufficientPermissionException.class, HttpStatus.FORBIDDEN,
-          TokenMalformedException.class, HttpStatus.UNAUTHORIZED));
+          TokenMalformedException.class, HttpStatus.UNAUTHORIZED,
+          TokenIssuanceFailException.class, HttpStatus.BAD_REQUEST));
 
   // =============================================================================
 

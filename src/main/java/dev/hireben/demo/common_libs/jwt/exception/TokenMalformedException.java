@@ -1,4 +1,6 @@
-package dev.hireben.demo.common_libs.exception;
+package dev.hireben.demo.common_libs.jwt.exception;
+
+import dev.hireben.demo.common_libs.exception.ApplicationException;
 
 public final class TokenMalformedException extends ApplicationException {
 
