@@ -61,8 +61,26 @@ final class JwtImplTests {
   // -----------------------------------------------------------------------------
 
   @Test
-  void issueToken_withInvalidTtl_shouldThrowException() {
+  void issueToken_withoutKey_withInvalidTtl_shouldThrowException() {
     JwtIssuer issuer = new JwtIssuerImpl(ISSUER_NAME);
+    assertThrows(TokenIssuanceFailException.class,
+        () -> issuer.issueToken(null, null, null, Duration.ofSeconds(-1), null));
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void issueToken_withSymmKey_withInvalidTtl_shouldThrowException() {
+    JwtIssuer issuer = new JwtIssuerImpl(ISSUER_NAME, symmetricKey);
+    assertThrows(TokenIssuanceFailException.class,
+        () -> issuer.issueToken(null, null, null, Duration.ofSeconds(-1), null));
+  }
+
+  // -----------------------------------------------------------------------------
+
+  @Test
+  void issueToken_withAsymmKey_withInvalidTtl_shouldThrowException() {
+    JwtIssuer issuer = new JwtIssuerImpl(ISSUER_NAME, keyPair.getPrivate());
     assertThrows(TokenIssuanceFailException.class,
         () -> issuer.issueToken(null, null, null, Duration.ofSeconds(-1), null));
   }
