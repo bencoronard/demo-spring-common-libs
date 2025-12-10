@@ -1,4 +1,4 @@
-package dev.hireben.demo.common_libs.crypto;
+package dev.hireben.demo.common_libs.reader;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +35,7 @@ final class KeyReaderTests {
   // -----------------------------------------------------------------------------
 
   @Test
-  void testReadRsaPrivateKeyPkcs8() throws NoSuchAlgorithmException, InvalidKeySpecException {
+  void readRsaPrivateKeyPkcs8_shouldReturnPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
     PrivateKey key = KeyReader.readRsaPrivateKeyPkcs8(rsaPrivateKeyPkcs8);
     assertNotNull(key);
     assertNotNull(key.getEncoded());
@@ -46,7 +46,7 @@ final class KeyReaderTests {
   // -----------------------------------------------------------------------------
 
   @Test
-  void testReadRsaPublicKeyX509() throws NoSuchAlgorithmException,
+  void readRsaPublicKeyX509_shouldReturnPublicKey() throws NoSuchAlgorithmException,
       InvalidKeySpecException {
     PublicKey key = KeyReader.readRsaPublicKeyX509(rsaPublicKeyX509);
     assertNotNull(key);
@@ -58,7 +58,7 @@ final class KeyReaderTests {
   // -----------------------------------------------------------------------------
 
   @Test
-  void testPublicKeyMatchesPrivateKey() throws NoSuchAlgorithmException,
+  void derivePublicKeyFromPrivateKey_shouldMatchReadPublicKey() throws NoSuchAlgorithmException,
       InvalidKeySpecException {
     PrivateKey privateKey = KeyReader.readRsaPrivateKeyPkcs8(rsaPrivateKeyPkcs8);
     PublicKey publicKey = KeyReader.readRsaPublicKeyX509(rsaPublicKeyX509);
